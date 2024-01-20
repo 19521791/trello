@@ -33,7 +33,7 @@ function Profiles() {
           aria-expanded={open ? 'true' : undefined}
         >
           <Avatar
-            sx={{ width: 30, height: 32 }}
+            sx={{ width: 36, height: 36 }}
             alt='Douglus Nguyen'
             src='https://imgs.search.brave.com/8qUtp1mPZUaGiLA15zwveGi4CrI3v8LlACiGkmaNdu4/rs:fit:860:0:0/g:ce/aHR0cHM6Ly93YWxs/cGFwZXJzLmNvbS9p/bWFnZXMvaGQvYW5p/bWUtcHJvZmlsZS1w/aWN0dXJlLXZpb2xl/dC1ldmVyZ2FyZGVu/LXV4cHh1dzVqODFj/MHdhZDUuanBn'
           />
