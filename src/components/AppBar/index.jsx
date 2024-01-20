@@ -49,7 +49,7 @@ function AppBar() {
           <Starred />
           <Templates />
           <Button
-            sx={{ 
+            sx={{
               color: 'white',
               border: 'none',
               '&:hover': { border: 'none' }
@@ -64,7 +64,7 @@ function AppBar() {
 
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
 
-        <TextField 
+        <TextField
           id="outlined-search"
           label="Search"
           type="text"
