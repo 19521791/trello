@@ -1,6 +1,5 @@
 import Box from '@mui/material/Box'
 import ListColumns from './ListColumns/ListColumns'
-import { mapOrder } from '~/utils/sorts'
 import {
   DndContext,
   // PointerSensor,
@@ -27,7 +26,7 @@ const ACTIVE_DRAG_ITEM_TYPE = {
   CARD: 'ACTIVE_DRAG_ITEM_TYPE_CARD'
 }
 
-function BoardContent({ board, createNewColumn, createNewCard, moveColumns }) {
+function BoardContent({ board, createNewColumn, createNewCard, moveColumns, moveCardInTheSameColumn }) {
   // const pointerSensor = useSensor(PointerSensor, { activationConstraint: { distance: 10 } })
   const mouseSensor = useSensor(MouseSensor, { activationConstraint: { distance: 10 } })
   const touchSensor = useSensor(TouchSensor, { activationConstraint: { delay: 250, tolerance: 500 } })
@@ -44,7 +43,7 @@ function BoardContent({ board, createNewColumn, createNewCard, moveColumns }) {
   const lastOverId = useRef(null)
 
   useEffect(() => {
-    setOrderdColumns(mapOrder(board?.columns, board?.columnOrderIds, '_id'))
+    setOrderdColumns(board.columns)
   }, [board])
 
   const findColumnByCardId = (cardId) => {
@@ -172,6 +171,7 @@ function BoardContent({ board, createNewColumn, createNewCard, moveColumns }) {
         const newCardIndex = overColumn?.cards?.findIndex(c => c._id === overCardId)
 
         const dndOrderdCards = arrayMove(oldColumnWhenDragging?.cards, oldCardIndex, newCardIndex)
+        const dndOrderdCardIds = dndOrderdCards.map(card => card._id)
 
         setOrderdColumns(prevColumns => {
           const nextColumns = cloneDeep(prevColumns)
@@ -180,10 +180,12 @@ function BoardContent({ board, createNewColumn, createNewCard, moveColumns }) {
 
           targetColumn.cards = dndOrderdCards
 
-          targetColumn.cardOrderIds = dndOrderdCards.map(card => card._id)
+          targetColumn.cardOrderIds = dndOrderdCardIds
 
           return nextColumns
         })
+
+        moveCardInTheSameColumn(dndOrderdCards, dndOrderdCardIds, oldColumnWhenDragging._id)
       }
     }
 
@@ -195,9 +197,9 @@ function BoardContent({ board, createNewColumn, createNewCard, moveColumns }) {
 
         const dndOrderdColumns = arrayMove(orderdColumns, oldColumnIndex, newColumnIndex)
 
-        moveColumns(dndOrderdColumns)
-
         setOrderdColumns(dndOrderdColumns)
+
+        moveColumns(dndOrderdColumns)
       }
     }
 

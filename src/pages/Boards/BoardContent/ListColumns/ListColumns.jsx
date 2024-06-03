@@ -31,7 +31,7 @@ function ListColumns({ columns, createNewColumn, createNewCard }) {
 
   return (
     <SortableContext items={columns?.map(obj => obj._id)} strategy={horizontalListSortingStrategy}>
-      <Box onClick={toggleOpenNewColumnForm} sx={{
+      <Box sx={{
         bgcolor: 'inherit',
         width: '100%',
         height: '100%',
@@ -43,7 +43,7 @@ function ListColumns({ columns, createNewColumn, createNewCard }) {
         {columns?.map(column => <Column key={column._id} column={column} createNewCard={createNewCard}/>)}
 
         {!openNewColumnForm
-          ? <Box sx={{
+          ? <Box onClick={toggleOpenNewColumnForm} sx={{
             minWidth: '200px',
             maxWidth: '200px',
             mx: 2,

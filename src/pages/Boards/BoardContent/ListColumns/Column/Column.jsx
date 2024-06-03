@@ -16,7 +16,6 @@ import Button from '@mui/material/Button'
 import DragHandleIcon from '@mui/icons-material/DragHandle'
 import Box from '@mui/material/Box'
 import ListCards from './ListCards/ListCards'
-import { mapOrder } from '~/utils/sorts'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import TextField from '@mui/material/TextField'
@@ -42,7 +41,7 @@ function Column({ column, createNewCard }) {
     setAnchorEl(event.currentTarget)
   }
   const handleClose = () => { setAnchorEl(null) }
-  const orderedCards = mapOrder(column?.cards, column?.cardOrderIds, '_id')
+  const orderedCards = column.cards
 
   const [openNewCardForm, setOpenNewCardForm] = useState(false)
   const toggleOpenNewCardForm = () => setOpenNewCardForm(!openNewCardForm)
@@ -50,7 +49,7 @@ function Column({ column, createNewCard }) {
   const [newCardTitle, setNewCardTitle] = useState('')
   const addNewCard = async () => {
     if (!newCardTitle) {
-      toast.error('Please enter Card Title!', { position: 'bottom-right' })
+      toast.error('Please enter Card Title!')
       return
     }
 
