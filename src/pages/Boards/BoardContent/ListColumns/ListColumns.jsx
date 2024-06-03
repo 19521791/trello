@@ -44,8 +44,8 @@ function ListColumns({ columns, createNewColumn, createNewCard }) {
 
         {!openNewColumnForm
           ? <Box sx={{
-            minWidth: '250px',
-            maxWidth: '250px',
+            minWidth: '200px',
+            maxWidth: '200px',
             mx: 2,
             borderRadius: '6px',
             height: 'fit-content',
@@ -102,9 +102,9 @@ function ListColumns({ columns, createNewColumn, createNewCard }) {
                 variant='contained' color='success' size='small'
                 sx={{
                   boxShadow: 'none',
-                  border: '0.5px solid',
+                  // border: '0.5px solid',
                   borderColor: { bgcolor: (theme) => theme.palette.success.main },
-                  '&:hover': { bgcolor: (theme) => theme.palette.success.main }
+                  '&:hover': { bgcolor: (theme) => theme.palette.success.light }
                 }}
               >
                 Add column

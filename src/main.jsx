@@ -10,6 +10,17 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <CssVarsProvider theme={theme}>
     <CssBaseline />
     <App />
-    <ToastContainer position='bottom-left' theme='colored' />
+    <ToastContainer
+      position="top-right"
+      autoClose={3000}
+      hideProgressBar
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="colored"
+    />
   </CssVarsProvider>
 )
