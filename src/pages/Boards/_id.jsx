@@ -7,6 +7,7 @@ import { mapOrder } from '~/utils/sorts'
 import {
   createNewCardAPI,
   createNewColumnAPI,
+  deleteColumnDetailsAPI,
   fetchBoardDetailsAPI,
   moveCardToDifferentColumnAPI,
   updateBoardDetailsAPI,
@@ -16,6 +17,7 @@ import { isEmpty } from 'lodash'
 import { generatePlaceholderCard } from '~/utils/formatters'
 import Box from '@mui/material/Box'
 import { CircularProgress, Typography } from '@mui/material'
+import { toast } from 'react-toastify'
 
 export default function Board() {
   const [board, setBoard] = useState(null)
@@ -64,8 +66,13 @@ export default function Board() {
     const columnToUpdate = newBoard.columns.find(column => column._id === createdCard.columnId)
 
     if (columnToUpdate) {
-      columnToUpdate.cards.push(createdCard)
-      columnToUpdate.cardOrderIds.push(createdCard._id)
+      if (columnToUpdate.cards.some(card => card.FE_PlaceholderCard)) {
+        columnToUpdate.cards = [createdCard]
+        columnToUpdate.cardOrderIds = [createdCard._id]
+      } else {
+        columnToUpdate.cards.push(createdCard)
+        columnToUpdate.cardOrderIds.push(createdCard._id)
+      }
     }
 
     setBoard(newBoard)
@@ -101,15 +108,31 @@ export default function Board() {
     const newBoard = { ...board }
     newBoard.columns = dndOrderdColumns
     newBoard.columnOrderIds = dndOrderdColumnsIds
-
     setBoard(newBoard)
+
+    let prevCardOrderIds = dndOrderdColumns.find(c => c._id === prevColumnId)?.cardOrderIds || []
+
+    if (prevCardOrderIds[0].includes('placeholder-card')) prevCardOrderIds = []
 
     moveCardToDifferentColumnAPI({
       currentCardId,
       prevColumnId,
-      prevCardOrderIds: dndOrderdColumns.find(c => c._id === prevColumnId)?.cardOrderIds,
+      prevCardOrderIds,
       nextColumnId,
       nextCardOrderIds: dndOrderdColumns.find(c => c._id === nextColumnId)?.cardOrderIds
+    })
+  }
+
+  const deleteColumnDetails = (columnId) => {
+    const newBoard = { ...board }
+    newBoard.columns = newBoard.columns.filter(c => c._id !== columnId)
+    newBoard.columnOrderIds = newBoard.columnOrderIds.filter(_id => _id !== columnId)
+    setBoard(newBoard)
+
+    deleteColumnDetailsAPI(columnId).then(res => {
+      if (res?.status === 'ok') {
+        toast.success('Delete Successfully')
+      }
     })
   }
 
@@ -140,6 +163,7 @@ export default function Board() {
         moveColumns={moveColumns}
         moveCardInTheSameColumn={moveCardInTheSameColumn}
         moveCardToDifferentColumn={moveCardToDifferentColumn}
+        deleteColumnDetails={deleteColumnDetails}
       />
     </Container>
   )
