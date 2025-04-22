@@ -18,26 +18,39 @@ import { generatePlaceholderCard } from '~/utils/formatters'
 import Box from '@mui/material/Box'
 import { CircularProgress, Typography } from '@mui/material'
 import { toast } from 'react-toastify'
+import { mockData } from '~/apis/mock-data'
 
 export default function Board() {
   const [board, setBoard] = useState(null)
 
   useEffect(() => {
-    const boardId = '65d5e60cd1a265d70401a10a'
-    fetchBoardDetailsAPI(boardId).then(board => {
+    const boardId = 'board-id-01'
+    // fetchBoardDetailsAPI(boardId).then(board => {
 
-      board.columns = mapOrder(board.columns, board.columnOrderIds, '_id')
+    //   board.columns = mapOrder(board.columns, board.columnOrderIds, '_id')
 
-      board.columns.forEach(column => {
-        if (isEmpty(column.cards)) {
-          column.cards = [generatePlaceholderCard(column)]
-          column.cardOrderIds = [generatePlaceholderCard(column)._id]
-        } else {
-          column.cards = mapOrder(column.cards, column.cardOrderIds, '_id')
-        }
-      })
-      setBoard(board)
+    //   board.columns.forEach(column => {
+    //     if (isEmpty(column.cards)) {
+    //       column.cards = [generatePlaceholderCard(column)]
+    //       column.cardOrderIds = [generatePlaceholderCard(column)._id]
+    //     } else {
+    //       column.cards = mapOrder(column.cards, column.cardOrderIds, '_id')
+    //     }
+    //   })
+    //   setBoard(board)
+    // })
+    const board_ = mockData
+    board_.columns = mapOrder(board_.columns, board_.columnOrderIds, '_id')
+
+    board_.columns.forEach(column => {
+      if (isEmpty(column.cards)) {
+        column.cards = [generatePlaceholderCard(column)]
+        column.cardOrderIds = [generatePlaceholderCard(column)._id]
+      } else {
+        column.cards = mapOrder(column.cards, column.cardOrderIds, '_id')
+      }
     })
+    setBoard(board_)
   }, [])
 
   const createNewColumn = async (newColumnData) => {
